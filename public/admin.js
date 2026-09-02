@@ -50,7 +50,7 @@ document.getElementById('setupForm').addEventListener('submit', async (e) => {
   const data = await res.json();
   if (!res.ok) {
     msg.className = 'msg err';
-    msg.textContent = data.error;
+    msg.textContent = data.error || `Gagal (status ${res.status}), server tidak kirim pesan error`;
     return;
   }
   msg.className = 'msg ok';
@@ -231,3 +231,4 @@ async function deleteVideo(id) {
 }
 
 boot();
+      
