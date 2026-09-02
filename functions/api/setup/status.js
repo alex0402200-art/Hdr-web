@@ -1,22 +1,17 @@
-import { db, json } from '../../_utils.js';
+import { json } from '../../_utils.js';
 
 export async function onRequestGet({ env }) {
-  const diag = {
-    has_url: !!env.SUPABASE_URL,
-    url_value: env.SUPABASE_URL || null,
-    has_key: !!env.SUPABASE_SERVICE_KEY,
-    key_prefix: (env.SUPABASE_SERVICE_KEY || '').slice(0, 12),
-    key_length: (env.SUPABASE_SERVICE_KEY || '').length
-  };
-
-  try {
-    const supabase = db(env);
-    const { count, error } = await supabase.from('admins').select('*', { count: 'exact', head: true });
-    if (error) {
-      return json({ available: false, diag, error_full: JSON.stringify(error) });
+  const url = `${env.SUPABASE_URL}/rest/v1/admins?select=id&limit=1`;
+  const res = await fetch(url, {
+    headers: {
+      apikey: env.SUPABASE_SERVICE_KEY,
+      Authorization: `Bearer ${env.SUPABASE_SERVICE_KEY}`
     }
-    return json({ available: count === 0, diag, count });
-  } catch (e) {
-    return json({ available: false, diag, caught: String(e && e.message || e) });
-  }
+  });
+  const bodyText = await res.text();
+  return json({
+    status: res.status,
+    statusText: res.statusText,
+    body: bodyText
+  });
 }
