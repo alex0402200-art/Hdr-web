@@ -1,5 +1,6 @@
 # HDR Film — Panduan Deploy
 
+yo
 Website video: login admin → upload poster + link embed Doodstream + kategori.
 Pengunjung lihat grid ala YouTube → klik poster → nonton + video terkait kategori sama.
 
