@@ -38,24 +38,38 @@ document.getElementById('setupForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const msg = document.getElementById('setupMsg');
   msg.textContent = '';
-  const res = await fetch('/api/setup', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      token: document.getElementById('setupToken').value,
-      username: document.getElementById('setupUsername').value,
-      password: document.getElementById('setupPassword').value
-    })
-  });
-  const data = await res.json();
-  if (!res.ok) {
+  msg.className = 'msg';
+  try {
+    const res = await fetch('/api/setup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token: document.getElementById('setupToken').value,
+        username: document.getElementById('setupUsername').value,
+        password: document.getElementById('setupPassword').value
+      })
+    });
+    const rawText = await res.text();
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      msg.className = 'msg err';
+      msg.textContent = `Server error mentah (status ${res.status}): ${rawText.slice(0, 300)}`;
+      return;
+    }
+    if (!res.ok) {
+      msg.className = 'msg err';
+      msg.textContent = data.error || `Gagal (status ${res.status}), server tidak kirim pesan error`;
+      return;
+    }
+    msg.className = 'msg ok';
+    msg.textContent = 'Admin berhasil dibuat. Silakan login.';
+    setTimeout(() => location.reload(), 1000);
+  } catch (err) {
     msg.className = 'msg err';
-    msg.textContent = data.error || `Gagal (status ${res.status}), server tidak kirim pesan error`;
-    return;
+    msg.textContent = `Gagal koneksi ke server: ${err.message}`;
   }
-  msg.className = 'msg ok';
-  msg.textContent = 'Admin berhasil dibuat. Silakan login.';
-  setTimeout(() => location.reload(), 1000);
 });
 
 // ===== Login =====
@@ -231,4 +245,3 @@ async function deleteVideo(id) {
 }
 
 boot();
-      
