@@ -22,7 +22,7 @@ export async function hashPassword(password, saltB64) {
   const salt = saltB64 ? fromB64(saltB64) : crypto.getRandomValues(new Uint8Array(16));
   const key = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveBits']);
   const bits = await crypto.subtle.deriveBits(
-    { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+    { name: 'PBKDF2', salt, iterations: 150000, hash: 'SHA-256' },
     key,
     256
   );
@@ -57,7 +57,7 @@ export async function getLoggedInUser(request, env) {
 export function isValidDoodstreamEmbed(url) {
   try {
     const u = new URL(url);
-    return u.protocol === 'https:' && /dood|ds2play|doods/i.test(u.hostname);
+    return u.protocol === 'https:';
   } catch {
     return false;
   }
