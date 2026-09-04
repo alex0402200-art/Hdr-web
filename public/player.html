@@ -9,9 +9,18 @@
 <body>
 
 <header class="site-header">
-  <a href="/" class="brand">HDR FILM</a>
+  <div class="menu-wrap">
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">&#9776;</button>
+    <div class="side-menu" id="sideMenu">
+      <a href="/" class="side-menu-link">&#127968; Beranda</a>
+      <a href="/admin.html" class="side-menu-link">&#128100; Login</a>
+      <div class="side-menu-divider"></div>
+      <div class="side-menu-label">Kategori</div>
+      <div id="sideMenuCategories"></div>
+    </div>
+  </div>
   <div class="header-spacer"></div>
-  <a href="/admin.html" class="admin-link">Admin</a>
+  <a href="/" class="brand-small">HDR<span class="play-icon-small">&#9654;</span></a>
 </header>
 
 <div class="player-wrap">
@@ -26,5 +35,7 @@
 
 <script src="/app.js"></script>
 <script src="/player.js"></script>
+<script src="/menu.js"></script>
 </body>
-</html>
+    </html>
+    
