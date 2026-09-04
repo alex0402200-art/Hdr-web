@@ -83,6 +83,37 @@ h1, h2, h3, .brand, .btn, .video-title {
 
 .side-menu-link:hover { background: var(--bg-hover); color: var(--gold); }
 
+.side-menu-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 6px 4px;
+}
+
+.side-menu-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  padding: 6px 12px 2px;
+}
+
+.brand-small {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.play-icon-small {
+  color: var(--red);
+  font-size: 14px;
+}
+
 /* ===== Logo hero (besar, di tengah) ===== */
 .logo-hero {
   display: flex;
@@ -423,5 +454,5 @@ h1, h2, h3, .brand, .btn, .video-title {
   .grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
   .video-title { font-size: 12px; }
   .video-meta { font-size: 11px; }
-    }
+  }
   
