@@ -14,6 +14,9 @@
     <div class="side-menu" id="sideMenu">
       <a href="/" class="side-menu-link">&#127968; Beranda</a>
       <a href="/admin.html" class="side-menu-link">&#128100; Login</a>
+      <div class="side-menu-divider"></div>
+      <div class="side-menu-label">Kategori</div>
+      <div id="sideMenuCategories"></div>
     </div>
   </div>
   <div class="header-spacer"></div>
@@ -35,19 +38,6 @@
 <div id="content"></div>
 
 <script src="/app.js"></script>
-<script>
-  const menuBtn = document.getElementById('menuBtn');
-  const sideMenu = document.getElementById('sideMenu');
-  menuBtn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    sideMenu.classList.toggle('open');
-  });
-  document.addEventListener('click', function (e) {
-    if (!sideMenu.contains(e.target) && e.target !== menuBtn) {
-      sideMenu.classList.remove('open');
-    }
-  });
-</script>
+<script src="/menu.js"></script>
 </body>
-  </html>
-  
+</html>
