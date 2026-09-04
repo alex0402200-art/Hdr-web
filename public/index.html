@@ -9,9 +9,14 @@
 <body>
 
 <header class="site-header">
-  <button class="menu-btn" aria-label="Menu">&#9776;</button>
+  <div class="menu-wrap">
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">&#9776;</button>
+    <div class="side-menu" id="sideMenu">
+      <a href="/" class="side-menu-link">&#127968; Beranda</a>
+      <a href="/admin.html" class="side-menu-link">&#128100; Login</a>
+    </div>
+  </div>
   <div class="header-spacer"></div>
-  <a href="/admin.html" class="admin-link">&#128100; Login</a>
 </header>
 
 <div class="logo-hero">
@@ -30,5 +35,19 @@
 <div id="content"></div>
 
 <script src="/app.js"></script>
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const sideMenu = document.getElementById('sideMenu');
+  menuBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    sideMenu.classList.toggle('open');
+  });
+  document.addEventListener('click', function (e) {
+    if (!sideMenu.contains(e.target) && e.target !== menuBtn) {
+      sideMenu.classList.remove('open');
+    }
+  });
+</script>
 </body>
-</html>
+  </html>
+  
