@@ -43,6 +43,10 @@ h1, h2, h3, .brand, .btn, .video-title {
   border-bottom: 1px solid var(--line);
 }
 
+.menu-wrap {
+  position: relative;
+}
+
 .menu-btn {
   background: none;
   border: none;
@@ -51,6 +55,33 @@ h1, h2, h3, .brand, .btn, .video-title {
   cursor: pointer;
   padding: 4px 8px;
 }
+
+.side-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 180px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 6px;
+  display: none;
+  flex-direction: column;
+  z-index: 30;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.side-menu.open { display: flex; }
+
+.side-menu-link {
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.side-menu-link:hover { background: var(--bg-hover); color: var(--gold); }
 
 /* ===== Logo hero (besar, di tengah) ===== */
 .logo-hero {
@@ -392,4 +423,5 @@ h1, h2, h3, .brand, .btn, .video-title {
   .grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
   .video-title { font-size: 12px; }
   .video-meta { font-size: 11px; }
-}
+    }
+  
