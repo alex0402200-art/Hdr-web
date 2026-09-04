@@ -98,6 +98,17 @@ async function loadVideos() {
 if (content) {
   (async function init() {
     await loadCategories();
+    const urlParams = new URLSearchParams(window.location.search);
+    const catFromUrl = urlParams.get('category');
+    if (catFromUrl) {
+      activeCategory = catFromUrl;
+      const pill = [...categoryRail.children].find((p) => p.dataset.id === catFromUrl);
+      if (pill) {
+        [...categoryRail.children].forEach((p) => p.classList.remove('active'));
+        pill.classList.add('active');
+      }
+    }
     await loadVideos();
   })();
-}
+      }
+    
