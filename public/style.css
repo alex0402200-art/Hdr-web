@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  --bg: #0d0e12;
+  --bg: #000000;
   --bg-raised: #16181f;
   --bg-hover: #1f222b;
   --line: #262933;
   --text: #eef0f4;
   --text-dim: #9199ab;
-  --gold: #e0ac47;
-  --gold-dim: #8a6c2e;
-  --red: #c0463a;
+  --gold: #e63946;
+  --gold-dim: #a52a2f;
+  --red: #e63946;
   --radius: 6px;
 }
 
@@ -38,23 +38,50 @@ h1, h2, h3, .brand, .btn, .video-title {
   align-items: center;
   gap: 16px;
   padding: 14px 20px;
-  background: rgba(13, 14, 18, 0.92);
+  background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
 }
 
-.brand {
-  font-size: 20px;
+.menu-btn {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* ===== Logo hero (besar, di tengah) ===== */
+.logo-hero {
+  display: flex;
+  justify-content: center;
+  padding: 28px 20px 8px;
+}
+
+.brand-big {
+  font-family: 'Oswald', sans-serif;
+  font-size: 42px;
   font-weight: 700;
-  letter-spacing: 0.5px;
-  color: var(--gold);
-  white-space: nowrap;
+  letter-spacing: 1px;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.play-icon {
+  color: var(--red);
+  font-size: 30px;
+  margin-left: 2px;
 }
 
 .search-box {
   flex: 1;
   max-width: 420px;
   display: flex;
+  margin: 0 auto 20px;
+  padding: 0 20px;
 }
 
 .search-box input {
@@ -71,13 +98,15 @@ h1, h2, h3, .brand, .btn, .video-title {
 .search-box input:focus { border-color: var(--gold-dim); }
 
 .search-box button {
-  background: var(--bg-hover);
-  border: 1px solid var(--line);
+  background: var(--red);
+  border: 1px solid var(--red);
   border-left: none;
-  color: var(--text-dim);
+  color: #fff;
   padding: 0 16px;
   border-radius: 0 var(--radius) var(--radius) 0;
   cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .header-spacer { flex: 1; }
@@ -359,6 +388,8 @@ h1, h2, h3, .brand, .btn, .video-title {
 
 @media (max-width: 640px) {
   .site-header { flex-wrap: wrap; }
-  .search-box { order: 3; max-width: 100%; }
-  .grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+  .brand-big { font-size: 34px; }
+  .grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .video-title { font-size: 12px; }
+  .video-meta { font-size: 11px; }
 }
