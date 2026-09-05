@@ -490,4 +490,164 @@ h1, h2, h3, .brand, .btn, .video-title {
 
 @media (max-width: 640px) {
   .banner-strip { font-size: 13px; margin: 20px 12px; padding: 12px 14px; }
+}
+
+/* ===== Admin header baru (logo + hamburger) ===== */
+.admin-header {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+.admin-logo { line-height: 1; margin-bottom: 14px; }
+
+.admin-logo-top {
+  font-family: 'Oswald', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.admin-logo-top .play-icon {
+  color: var(--red);
+  font-size: 22px;
+}
+
+.admin-logo-bottom {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--red);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.admin-header .menu-wrap { position: static; }
+
+.admin-header .chip {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+/* ===== Admin view (halaman upload / my vidio / edit baner) ===== */
+.admin-view {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.admin-title {
+  color: var(--red);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+.btn-block { display: block; width: 100%; text-align: center; }
+
+.btn-outline-block {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 12px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-outline-block:hover { border-color: var(--gold-dim); }
+
+/* ===== Tombol & popup kategori ===== */
+.category-field { position: relative; margin-bottom: 14px; }
+
+.btn-category {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background: var(--gold-dim);
+  color: #fff;
+  border: none;
+  padding: 13px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.btn-category:hover { background: var(--red); }
+
+.category-popup {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #0c0d10;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 -8px 24px rgba(0,0,0,0.5);
+  z-index: 40;
+}
+
+.category-popup-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.category-popup-item:last-child { border-bottom: none; }
+
+.category-popup-item.new-cat {
+  cursor: default;
+  gap: 10px;
+  color: var(--red);
+  font-weight: 600;
+}
+
+.category-popup-item.new-cat input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  text-transform: uppercase;
+}
+
+.category-popup-item.new-cat .cat-icon {
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.category-popup-item .cat-name { flex: 1; color: var(--text); }
+
+.category-popup-item .cat-delete {
+  background: none;
+  border: none;
+  color: var(--red);
+  font-size: 15px;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.category-popup-item.no-cat {
+  justify-content: center;
+  color: var(--text-dim);
+  font-size: 13px;
+  letter-spacing: 0.5px;
   }
+                         
