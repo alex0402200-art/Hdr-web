@@ -95,6 +95,23 @@ async function loadVideos() {
   content.appendChild(grid);
 }
 
+async function loadBanner() {
+  const bannerEl = document.getElementById('bannerStrip');
+  if (!bannerEl) return;
+  try {
+    const res = await fetch('/api/settings/banner');
+    if (!res.ok) return;
+    const banner = await res.json();
+    if (!banner.enabled || !banner.text) return;
+
+    document.getElementById('bannerText').textContent = banner.text;
+    bannerEl.href = banner.link || '#';
+    bannerEl.style.display = 'flex';
+  } catch (e) {
+    // diamkan kalau gagal, banner cuma pemanis, jangan sampai ganggu halaman utama
+  }
+}
+
 if (content) {
   (async function init() {
     await loadCategories();
@@ -109,5 +126,6 @@ if (content) {
       }
     }
     await loadVideos();
+    await loadBanner();
   })();
-}
+    }
