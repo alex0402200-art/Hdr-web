@@ -27,7 +27,7 @@ async function boot() {
     whoami.textContent = `Login sebagai ${auth.username}`;
     dashboard.style.display = 'block';
     loadCategories();
-    loadVideos();
+    switchView('upload');
   } else {
     loginCard.style.display = 'block';
   }
@@ -80,41 +80,93 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   location.reload();
 });
 
+// ===== Hamburger menu & view switching =====
+const menuBtn = document.getElementById('menuBtn');
+const sideMenu = document.getElementById('sideMenu');
+
+menuBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  sideMenu.classList.toggle('open');
+});
+
+document.addEventListener('click', () => sideMenu.classList.remove('open'));
+
+document.querySelectorAll('.side-menu-link').forEach((link) => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    switchView(link.dataset.view);
+  });
+});
+
+function switchView(name) {
+  document.getElementById('viewUpload').style.display = name === 'upload' ? 'block' : 'none';
+  document.getElementById('viewMyVideo').style.display = name === 'myVideo' ? 'block' : 'none';
+  document.getElementById('viewEditBanner').style.display = name === 'editBanner' ? 'block' : 'none';
+  sideMenu.classList.remove('open');
+  categoryPopup.style.display = 'none';
+
+  if (name === 'myVideo') loadVideos();
+  if (name === 'editBanner') loadBannerSettings();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 // ===== Kategori =====
 let categoriesCache = [];
+const categoryBtn = document.getElementById('categoryBtn');
+const categoryBtnLabel = document.getElementById('categoryBtnLabel');
+const categoryPopup = document.getElementById('categoryPopup');
+const categoryPopupList = document.getElementById('categoryPopupList');
+const videoCategoryInput = document.getElementById('videoCategory');
 
 async function loadCategories() {
   const res = await fetch('/api/categories');
   const data = await res.json();
   categoriesCache = data.items || [];
+  renderCategoryPopup();
+}
 
-  const list = document.getElementById('categoryList');
-  list.innerHTML = categoriesCache.length
-    ? ''
-    : '<div class="video-meta">Belum ada kategori.</div>';
-
+function renderCategoryPopup() {
+  categoryPopupList.innerHTML = '';
   categoriesCache.forEach((c) => {
     const row = document.createElement('div');
-    row.className = 'admin-row';
+    row.className = 'category-popup-item';
     row.innerHTML = `
-      <div class="info"><div class="t">${escapeHtml(c.name)}</div></div>
-      <button class="btn btn-ghost" data-id="${c.id}">Hapus</button>
+      <span class="cat-name" data-id="${c.id}" data-name="${escapeHtml(c.name)}">${escapeHtml(c.name)}</span>
+      <button type="button" class="cat-delete" data-id="${c.id}">&#128465;</button>
     `;
-    row.querySelector('button').addEventListener('click', () => deleteCategory(c.id));
-    list.appendChild(row);
-  });
-
-  const select = document.getElementById('videoCategory');
-  select.innerHTML = '<option value="">- Tanpa kategori -</option>';
-  categoriesCache.forEach((c) => {
-    const opt = document.createElement('option');
-    opt.value = c.id;
-    opt.textContent = c.name;
-    select.appendChild(opt);
+    row.querySelector('.cat-name').addEventListener('click', () => selectCategory(c.id, c.name));
+    row.querySelector('.cat-delete').addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteCategory(c.id);
+    });
+    categoryPopupList.appendChild(row);
   });
 }
 
-document.getElementById('addCategoryBtn').addEventListener('click', async () => {
+function selectCategory(id, name) {
+  videoCategoryInput.value = id;
+  categoryBtnLabel.textContent = name ? name.toUpperCase() : 'PILIH KATEGORI';
+  categoryPopup.style.display = 'none';
+}
+
+categoryBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  categoryPopup.style.display = categoryPopup.style.display === 'none' ? 'block' : 'none';
+});
+
+categoryPopup.addEventListener('click', (e) => e.stopPropagation());
+
+document.querySelector('.category-popup .no-cat').addEventListener('click', () => selectCategory('', ''));
+
+document.getElementById('newCategoryName').addEventListener('keydown', async (e) => {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  await addCategory();
+});
+
+document.querySelector('.category-popup .cat-icon').addEventListener('click', addCategory);
+
+async function addCategory() {
   const input = document.getElementById('newCategoryName');
   const name = input.value.trim();
   if (!name) return;
@@ -130,13 +182,13 @@ document.getElementById('addCategoryBtn').addEventListener('click', async () => 
     const data = await res.json();
     alert(data.error);
   }
-});
+}
 
 async function deleteCategory(id) {
   if (!confirm('Hapus kategori ini? Video di dalamnya tidak akan terhapus, hanya jadi tanpa kategori.')) return;
   await fetch(`/api/categories/${id}`, { method: 'DELETE' });
+  if (videoCategoryInput.value === id) selectCategory('', '');
   loadCategories();
-  loadVideos();
 }
 
 // ===== Upload poster dari galeri =====
@@ -192,7 +244,7 @@ videoForm.addEventListener('submit', async (e) => {
     title: document.getElementById('videoTitle').value,
     poster_url: document.getElementById('videoPoster').value,
     embed_url: document.getElementById('videoEmbed').value,
-    category_id: document.getElementById('videoCategory').value || null
+    category_id: videoCategoryInput.value || null
   };
 
   const res = await fetch('/api/videos', {
@@ -211,14 +263,13 @@ videoForm.addEventListener('submit', async (e) => {
   msg.className = 'msg ok';
   msg.textContent = data.message;
   resetForm();
-  loadVideos();
 });
 
 function resetForm() {
   videoForm.reset();
   document.getElementById('videoId').value = '';
-  document.getElementById('formHeading').textContent = 'Upload Video Baru';
-  document.getElementById('videoSubmitBtn').textContent = 'Publikasikan';
+  selectCategory('', '');
+  document.getElementById('videoSubmitBtn').textContent = 'UNGGAH';
   cancelEditBtn.style.display = 'none';
 }
 
@@ -240,7 +291,7 @@ async function loadVideos() {
       <img src="${v.poster_url}" alt="">
       <div class="info">
         <div class="t">${escapeHtml(v.title)}</div>
-        <div class="s">${v.categories ? escapeHtml(v.categories.name) : 'Tanpa kategori'} · ${v.views || 0} views</div>
+        <div class="s">${v.categories ? escapeHtml(v.categories.name) : 'Tanpa kategori'} &middot; ${v.views || 0} views</div>
       </div>
       <button class="btn btn-ghost" data-action="edit">Edit</button>
       <button class="btn btn-ghost" data-action="delete">Hapus</button>
@@ -256,11 +307,10 @@ function editVideo(v) {
   document.getElementById('videoTitle').value = v.title;
   document.getElementById('videoPoster').value = v.poster_url;
   document.getElementById('videoEmbed').value = v.embed_url;
-  document.getElementById('videoCategory').value = v.category_id || '';
-  document.getElementById('formHeading').textContent = 'Edit Video';
-  document.getElementById('videoSubmitBtn').textContent = 'Simpan Perubahan';
+  selectCategory(v.category_id || '', v.categories ? v.categories.name : '');
+  document.getElementById('videoSubmitBtn').textContent = 'SIMPAN PERUBAHAN';
   cancelEditBtn.style.display = 'inline-block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  switchView('upload');
 }
 
 async function deleteVideo(id) {
@@ -269,4 +319,52 @@ async function deleteVideo(id) {
   loadVideos();
 }
 
+// ===== Edit Banner =====
+const bannerForm = document.getElementById('bannerForm');
+
+async function loadBannerSettings() {
+  const msg = document.getElementById('bannerMsg');
+  msg.textContent = '';
+  try {
+    const res = await fetch('/api/settings/banner');
+    const data = await res.json();
+    document.getElementById('bannerEnabled').value = data.enabled ? 'true' : 'false';
+    document.getElementById('bannerText').value = data.text || '';
+    document.getElementById('bannerLink').value = data.link || '';
+  } catch (e) {
+    msg.className = 'msg err';
+    msg.textContent = 'Gagal memuat data banner';
+  }
+}
+
+bannerForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('bannerMsg');
+  msg.textContent = '';
+
+  const body = {
+    enabled: document.getElementById('bannerEnabled').value === 'true',
+    text: document.getElementById('bannerText').value,
+    link: document.getElementById('bannerLink').value,
+    image_url: ''
+  };
+
+  const res = await fetch('/api/settings/banner', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    msg.className = 'msg err';
+    msg.textContent = data.error || 'Gagal menyimpan banner';
+    return;
+  }
+
+  msg.className = 'msg ok';
+  msg.textContent = 'Banner berhasil disimpan';
+});
+
 boot();
+    
