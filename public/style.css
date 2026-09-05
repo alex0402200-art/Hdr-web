@@ -455,4 +455,39 @@ h1, h2, h3, .brand, .btn, .video-title {
   .video-title { font-size: 12px; }
   .video-meta { font-size: 11px; }
   }
-  
+
+
+/* ===== Banner strip (spanduk promo) ===== */
+.banner-strip {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 24px 20px;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--red), #ff7a45);
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(230, 57, 70, 0.35);
+}
+
+.banner-strip:hover { filter: brightness(1.08); }
+
+.banner-click-icon {
+  font-size: 18px;
+  animation: bannerBounce 1s infinite;
+}
+
+@keyframes bannerBounce {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(6px); }
+}
+
+@media (max-width: 640px) {
+  .banner-strip { font-size: 13px; margin: 20px 12px; padding: 12px 14px; }
+  }
