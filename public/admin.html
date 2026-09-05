@@ -8,9 +8,19 @@
 </head>
 <body>
 
-<header class="site-header">
-  <a href="/" class="brand">HDR FILM</a>
-  <div class="header-spacer"></div>
+<header class="admin-header">
+  <div class="admin-logo">
+    <div class="admin-logo-top">HDR<span class="play-icon">&#9654;</span></div>
+    <div class="admin-logo-bottom">&ndash; FILM &ndash;</div>
+  </div>
+  <div class="menu-wrap">
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">&#9776;</button>
+    <div class="side-menu" id="sideMenu">
+      <a href="#" class="side-menu-link" data-view="upload">&#127968; Home</a>
+      <a href="#" class="side-menu-link" data-view="myVideo">&#9654; My Vidio</a>
+      <a href="#" class="side-menu-link" data-view="editBanner">&#9998; Edit Baner</a>
+    </div>
+  </div>
   <span id="whoami" class="chip" style="display:none"></span>
 </header>
 
@@ -41,47 +51,86 @@
 <!-- Dashboard admin -->
 <div class="admin-shell" id="dashboard" style="display:none">
 
-  <div class="panel">
-    <h2>Kategori</h2>
-    <div class="row-flex">
-      <div class="field"><input type="text" id="newCategoryName" placeholder="Nama kategori baru, mis. Action"></div>
-      <button class="btn" id="addCategoryBtn">Tambah</button>
-    </div>
-    <div class="admin-list" id="categoryList" style="margin-top:14px"></div>
-  </div>
-
-  <div class="panel">
-    <h2 id="formHeading">Upload Video Baru</h2>
+  <!-- View: Upload Film (default / Home) -->
+  <div class="admin-view" id="viewUpload">
+    <h1 class="admin-title">Upload Film</h1>
     <form id="videoForm">
       <input type="hidden" id="videoId">
-      <div class="field"><label>Judul film</label><input type="text" id="videoTitle" required></div>
+      <input type="hidden" id="videoCategory">
+
       <div class="field">
-        <label>Poster</label>
-        <input type="url" id="videoPoster" required placeholder="Link poster akan terisi otomatis, atau paste manual">
-        <div style="margin-top:8px">
-          <input type="file" id="posterFile" accept="image/*" style="display:none">
-          <button type="button" class="btn btn-ghost" id="posterUploadBtn">Pilih dari galeri</button>
-          <span class="msg" id="posterUploadMsg"></span>
+        <label>Tambah Judul</label>
+        <input type="text" id="videoTitle" required placeholder="Masukkan judul film disini...">
+      </div>
+
+      <div class="field">
+        <label>Pilih Poster dari Galeri</label>
+        <input type="file" id="posterFile" accept="image/*" style="display:none">
+        <button type="button" class="btn btn-outline-block" id="posterUploadBtn">&#128247;&nbsp; Pilih dari Galeri</button>
+        <div class="msg" id="posterUploadMsg"></div>
+      </div>
+
+      <div class="field">
+        <label>Link Poster</label>
+        <input type="url" id="videoPoster" required placeholder="Link poster akan muncul otomatis setelah dipilih">
+      </div>
+
+      <div class="field">
+        <label>Link Embed Doodstream</label>
+        <input type="url" id="videoEmbed" required placeholder="Masukkan link embed doodstream disini...">
+      </div>
+
+      <div class="category-field">
+        <button type="button" class="btn-category" id="categoryBtn">&#9638;&nbsp; <span id="categoryBtnLabel">PILIH KATEGORI</span></button>
+        <div class="category-popup" id="categoryPopup" style="display:none">
+          <div class="category-popup-item new-cat">
+            <span class="cat-icon">&#9998;</span>
+            <input type="text" id="newCategoryName" placeholder="KATEGORI BARU">
+          </div>
+          <div id="categoryPopupList"></div>
+          <div class="category-popup-item no-cat" data-id="" data-name="">TANPA KATEGORI</div>
         </div>
       </div>
-      <div class="field"><label>Link embed Doodstream</label><input type="url" id="videoEmbed" required placeholder="https://dood.../e/xxxxx"></div>
-      <div class="field">
-        <label>Kategori</label>
-        <select id="videoCategory"><option value="">- Tanpa kategori -</option></select>
-      </div>
-      <button class="btn" type="submit" id="videoSubmitBtn">Publikasikan</button>
-      <button class="btn btn-ghost" type="button" id="cancelEditBtn" style="display:none">Batal edit</button>
+
+      <button class="btn btn-block" type="submit" id="videoSubmitBtn">UNGGAH</button>
+      <button class="btn btn-ghost btn-block" type="button" id="cancelEditBtn" style="display:none">Batal edit</button>
       <div class="msg" id="videoMsg"></div>
     </form>
   </div>
 
-  <div class="panel">
-    <h2>Semua Video</h2>
+  <!-- View: My Vidio -->
+  <div class="admin-view" id="viewMyVideo" style="display:none">
+    <h1 class="admin-title">My Vidio</h1>
     <div class="admin-list" id="videoList"></div>
+  </div>
+
+  <!-- View: Edit Baner -->
+  <div class="admin-view" id="viewEditBanner" style="display:none">
+    <h1 class="admin-title">Edit Baner</h1>
+    <form id="bannerForm">
+      <div class="field">
+        <label>Tampilkan Banner</label>
+        <select id="bannerEnabled">
+          <option value="true">Aktif</option>
+          <option value="false">Nonaktif</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Teks Banner</label>
+        <input type="text" id="bannerText" placeholder="Kumpulan vidio viral terbaru terupdate gratis ada disini">
+      </div>
+      <div class="field">
+        <label>Link Tujuan (saat banner diklik)</label>
+        <input type="url" id="bannerLink" placeholder="https://...">
+      </div>
+      <button class="btn btn-block" type="submit">Simpan Banner</button>
+      <div class="msg" id="bannerMsg"></div>
+    </form>
   </div>
 
 </div>
 
 <script src="/admin.js"></script>
 </body>
-</html>
+            </html>
+          
