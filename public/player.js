@@ -19,7 +19,15 @@ async function loadVideo() {
 
   document.title = `${video.title} - HDR Film`;
   videoTitleEl.textContent = video.title;
-  videoMetaEl.textContent = video.categories ? video.categories.name : '';
+
+  const categoryText = video.categories ? video.categories.name : '';
+  videoMetaEl.innerHTML = `
+    <span>${categoryText}</span>
+    <span class="view-count">&#128065; ${video.views || 0} views</span>
+    <button id="shareBtn" class="share-btn">&#128279; Share</button>
+  `;
+
+  document.getElementById('shareBtn').addEventListener('click', () => shareVideo(video.title));
 
   playerFrame.innerHTML = `<iframe src="${video.embed_url}" allowfullscreen allow="autoplay; fullscreen"></iframe>`;
 
@@ -27,6 +35,20 @@ async function loadVideo() {
     loadRelated(video.category_id, video.id);
   } else {
     relatedGrid.innerHTML = '<div class="empty-state">Video ini belum punya kategori.</div>';
+  }
+}
+
+async function shareVideo(title) {
+  const shareUrl = window.location.href;
+  if (navigator.share) {
+    try {
+      await navigator.share({ title, url: shareUrl });
+    } catch (e) {
+      // user batal share, biarin aja
+    }
+  } else {
+    await navigator.clipboard.writeText(shareUrl);
+    alert('Link disalin!');
   }
 }
 
