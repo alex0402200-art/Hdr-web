@@ -1,7 +1,7 @@
 import { db, json, getLoggedInUser } from '../../_utils.js';
 
 // Publik: ambil 1 video + naikkan jumlah views
-export async function onRequestGet({ params, env }) {
+export async function onRequestGet({ params, env, waitUntil }) {
   const supabase = db(env);
   const { data: video, error } = await supabase
     .from('videos')
@@ -11,8 +11,20 @@ export async function onRequestGet({ params, env }) {
 
   if (error || !video) return json({ error: 'Video tidak ditemukan' }, 404);
 
-  // Naikkan views secara diam-diam (tidak perlu ditunggu)
-  supabase.from('videos').update({ views: (video.views || 0) + 1 }).eq('id', params.id).then(() => {});
+  // Naikkan views di background lewat fungsi RPC increment_views.
+  // waitUntil() memastikan Cloudflare tidak mematikan proses sebelum
+  // update ini selesai dikirim ke Supabase.
+  const updatePromise = supabase
+    .rpc('increment_views', { video_id: params.id })
+    .then(({ error: updateError }) => {
+      if (updateError) console.error('Gagal update views:', updateError.message);
+    });
+
+  if (typeof waitUntil === 'function') {
+    waitUntil(updatePromise);
+  } else {
+    await updatePromise;
+  }
 
   return json(video);
 }
@@ -25,4 +37,4 @@ export async function onRequestDelete({ params, request, env }) {
   const { error } = await db(env).from('videos').delete().eq('id', params.id);
   if (error) return json({ error: error.message }, 500);
   return json({ ok: true });
-}
+        }
