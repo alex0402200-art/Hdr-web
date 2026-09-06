@@ -114,36 +114,67 @@ h1, h2, h3, .brand, .btn, .video-title {
   font-size: 14px;
 }
 
-/* ===== Logo hero (besar, di tengah) ===== */
-.logo-hero {
-  display: flex;
-  justify-content: center;
-  padding: 28px 20px 8px;
-}
-
+/* ===== Logo di header (satu baris: menu - logo - ikon) ===== */
 .brand-big {
   font-family: 'Oswald', sans-serif;
-  font-size: 42px;
+  font-size: 24px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   color: var(--text);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
+  margin: 0 auto;
 }
+
+.brand-accent { color: var(--red); }
 
 .play-icon {
   color: var(--red);
-  font-size: 30px;
-  margin-left: 2px;
+  font-size: 18px;
+  margin-right: 4px;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 19px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+}
+
+.site-tagline {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin: 8px 0 0;
 }
 
 .search-box {
-  flex: 1;
-  max-width: 420px;
+  position: relative;
+  max-width: 480px;
   display: flex;
-  margin: 0 auto 20px;
+  margin: 16px auto 18px;
   padding: 0 20px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 34px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--text-dim);
+  pointer-events: none;
 }
 
 .search-box input {
@@ -151,27 +182,13 @@ h1, h2, h3, .brand, .btn, .video-title {
   background: var(--bg-raised);
   border: 1px solid var(--line);
   color: var(--text);
-  padding: 9px 14px;
-  border-radius: var(--radius) 0 0 var(--radius);
+  padding: 11px 14px 11px 38px;
+  border-radius: 999px;
   font-size: 14px;
   outline: none;
 }
 
 .search-box input:focus { border-color: var(--gold-dim); }
-
-.search-box button {
-  background: var(--red);
-  border: 1px solid var(--red);
-  border-left: none;
-  color: #fff;
-  padding: 0 16px;
-  border-radius: 0 var(--radius) var(--radius) 0;
-  cursor: pointer;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.header-spacer { flex: 1; }
 
 .admin-link {
   font-size: 13px;
@@ -226,6 +243,51 @@ h1, h2, h3, .brand, .btn, .video-title {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 16px;
   padding: 0 20px 20px;
+}
+
+/* ===== Section per kategori (halaman beranda) ===== */
+.cat-section { margin-bottom: 8px; }
+
+.cat-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 28px 20px 12px;
+}
+
+.cat-section-head h2 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text);
+}
+
+.see-all {
+  font-size: 13px;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.see-all:hover { text-decoration: underline; }
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 0 20px;
+}
+
+.badge-hd {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 2;
 }
 
 .poster-card { cursor: pointer; }
@@ -287,6 +349,31 @@ h1, h2, h3, .brand, .btn, .video-title {
   color: var(--text-dim);
   margin-top: 2px;
 }
+
+.poster-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.poster-actions .views { display: flex; align-items: center; gap: 4px; }
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.share-btn:hover { color: var(--gold); }
 
 .empty-state {
   text-align: center;
@@ -449,11 +536,12 @@ h1, h2, h3, .brand, .btn, .video-title {
 }
 
 @media (max-width: 640px) {
-  .site-header { flex-wrap: wrap; }
-  .brand-big { font-size: 34px; }
-  .grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .brand-big { font-size: 19px; }
+  .grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .grid-3col { gap: 8px; }
   .video-title { font-size: 12px; }
   .video-meta { font-size: 11px; }
+  .poster-actions { font-size: 10px; }
   }
 
 
@@ -650,4 +738,4 @@ h1, h2, h3, .brand, .btn, .video-title {
   font-size: 13px;
   letter-spacing: 0.5px;
   }
-                         
+
