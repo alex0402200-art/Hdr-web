@@ -163,6 +163,8 @@ h1, h2, h3, .brand, .btn, .video-title {
   position: relative;
   max-width: 480px;
   display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 16px auto 18px;
   padding: 0 20px;
 }
@@ -189,6 +191,40 @@ h1, h2, h3, .brand, .btn, .video-title {
 }
 
 .search-box input:focus { border-color: var(--gold-dim); }
+
+.search-submit-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--red);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.notif-btn { position: relative; }
+
+.notif-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: var(--red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
 
 .admin-link {
   font-size: 13px;
@@ -240,8 +276,8 @@ h1, h2, h3, .brand, .btn, .video-title {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
   padding: 0 20px 20px;
 }
 
@@ -260,6 +296,17 @@ h1, h2, h3, .brand, .btn, .video-title {
   font-weight: 600;
   margin: 0;
   color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cat-section-head h2::before {
+  content: '';
+  width: 4px;
+  height: 16px;
+  background: var(--red);
+  border-radius: 2px;
 }
 
 .see-all {
@@ -272,7 +319,7 @@ h1, h2, h3, .brand, .btn, .video-title {
 
 .grid-3col {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   padding: 0 20px;
 }
@@ -294,7 +341,7 @@ h1, h2, h3, .brand, .btn, .video-title {
 
 .poster-wrap {
   position: relative;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 16 / 9;
   border-radius: var(--radius);
   overflow: hidden;
   background: var(--bg-raised);
@@ -537,8 +584,8 @@ h1, h2, h3, .brand, .btn, .video-title {
 
 @media (max-width: 640px) {
   .brand-big { font-size: 19px; }
-  .grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .grid-3col { gap: 8px; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .grid-3col { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .video-title { font-size: 12px; }
   .video-meta { font-size: 11px; }
   .poster-actions { font-size: 10px; }
