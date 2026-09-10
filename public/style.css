@@ -127,6 +127,12 @@ h1, h2, h3, .brand, .btn, .video-title {
   margin: 0 auto;
 }
 
+.brand-big img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
 .brand-accent { color: var(--red); }
 
 .play-icon {
@@ -855,4 +861,5 @@ h1, h2, h3, .brand, .btn, .video-title {
   color: var(--text-dim);
 }
 
-  
+
+             
