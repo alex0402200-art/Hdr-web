@@ -1,3 +1,21 @@
+// ==== DEBUG SEMENTARA - hapus kalau udah ketemu bugnya ====
+const debugBox = document.createElement('div');
+debugBox.style.cssText = 'position:fixed;bottom:0;left:0;right:0;max-height:45vh;overflow:auto;background:#000;color:#0f0;font-size:11px;padding:8px;z-index:99999;white-space:pre-wrap;font-family:monospace;';
+document.body.appendChild(debugBox);
+function debugLog(label, data) {
+  debugBox.textContent += `[${label}] ${data}\n\n`;
+  debugBox.scrollTop = debugBox.scrollHeight;
+}
+window.addEventListener('error', (e) => debugLog('JS ERROR', e.message + ' @ line ' + e.lineno));
+window.addEventListener('unhandledrejection', (e) => debugLog('PROMISE ERROR', (e.reason && e.reason.message) || e.reason));
+const _origFetch = window.fetch;
+window.fetch = async (...args) => {
+  const res = await _origFetch(...args);
+  res.clone().text().then(t => debugLog('FETCH ' + args[0], res.status + ' \u2192 ' + t.slice(0, 300)));
+  return res;
+};
+// ==== END DEBUG ====
+
 const setupCard = document.getElementById('setupCard');
 const loginCard = document.getElementById('loginCard');
 const dashboard = document.getElementById('dashboard');
@@ -367,4 +385,4 @@ bannerForm.addEventListener('submit', async (e) => {
 });
 
 boot();
-    
+                                                      
