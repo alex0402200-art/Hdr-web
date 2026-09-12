@@ -249,6 +249,7 @@ if (content) {
     await loadCategories();
     const urlParams = new URLSearchParams(window.location.search);
     const catFromUrl = urlParams.get('category');
+    const searchFromUrl = urlParams.get('search');
     if (catFromUrl) {
       activeCategory = catFromUrl;
       const pill = [...categoryRail.children].find((p) => p.dataset.id === catFromUrl);
@@ -257,9 +258,13 @@ if (content) {
         pill.classList.add('active');
       }
     }
+    if (searchFromUrl) {
+      activeQuery = searchFromUrl;
+      if (searchInput) searchInput.value = searchFromUrl;
+    }
     await loadVideos();
     await loadBanner();
   })();
-      }
+}
 
-        
+      
