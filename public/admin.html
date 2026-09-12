@@ -120,8 +120,24 @@
         <input type="text" id="bannerText" placeholder="Kumpulan vidio viral terbaru terupdate gratis ada disini">
       </div>
       <div class="field">
+        <label>Gambar Banner</label>
+        <img id="bannerImagePreview" src="" alt="" style="display:none;max-width:100%;border-radius:8px;margin-bottom:8px;">
+        <input type="hidden" id="bannerImageUrl" value="">
+        <input type="file" id="bannerImageFile" accept="image/*" style="display:none">
+        <button type="button" class="btn btn-outline-block" id="bannerUploadBtn">&#128247;&nbsp; Tambah gambar dari galeri</button>
+        <div class="msg" id="bannerImageMsg"></div>
+      </div>
+      <div class="field">
         <label>Link Tujuan (saat banner diklik)</label>
         <input type="url" id="bannerLink" placeholder="https://...">
+      </div>
+      <div class="field">
+        <label>Link Telegram</label>
+        <input type="url" id="bannerTelegram" placeholder="https://t.me/yourchannel">
+      </div>
+      <div class="field">
+        <label>Link Facebook</label>
+        <input type="url" id="bannerFacebook" placeholder="https://facebook.com/yourpage">
       </div>
       <button class="btn btn-block" type="submit">Simpan Banner</button>
       <div class="msg" id="bannerMsg"></div>
@@ -133,4 +149,5 @@
 <script src="/admin.js"></script>
 </body>
             </html>
-          
+
+                          
