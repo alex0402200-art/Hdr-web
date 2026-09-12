@@ -321,6 +321,8 @@ async function deleteVideo(id) {
 
 // ===== Edit Banner =====
 const bannerForm = document.getElementById('bannerForm');
+const bannerImagePreview = document.getElementById('bannerImagePreview');
+const bannerImageUrl = document.getElementById('bannerImageUrl');
 
 async function loadBannerSettings() {
   const msg = document.getElementById('bannerMsg');
@@ -331,11 +333,60 @@ async function loadBannerSettings() {
     document.getElementById('bannerEnabled').value = data.enabled ? 'true' : 'false';
     document.getElementById('bannerText').value = data.text || '';
     document.getElementById('bannerLink').value = data.link || '';
+    document.getElementById('bannerTelegram').value = data.telegram || '';
+    document.getElementById('bannerFacebook').value = data.facebook || '';
+    bannerImageUrl.value = data.image_url || '';
+    if (data.image_url) {
+      bannerImagePreview.src = data.image_url;
+      bannerImagePreview.style.display = 'block';
+    } else {
+      bannerImagePreview.style.display = 'none';
+    }
   } catch (e) {
     msg.className = 'msg err';
     msg.textContent = 'Gagal memuat data banner';
   }
 }
+
+document.getElementById('bannerUploadBtn').addEventListener('click', () => {
+  document.getElementById('bannerImageFile').click();
+});
+
+document.getElementById('bannerImageFile').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const msg = document.getElementById('bannerImageMsg');
+  msg.className = 'msg';
+  msg.textContent = 'Mengupload...';
+
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('/api/admin/upload-poster', { method: 'POST', body: formData });
+    const rawText = await res.text();
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      msg.className = 'msg err';
+      msg.textContent = `Upload gagal (status ${res.status}): ${rawText.slice(0, 200)}`;
+      return;
+    }
+    if (!res.ok) {
+      msg.className = 'msg err';
+      msg.textContent = data.error || 'Upload gagal';
+      return;
+    }
+    bannerImageUrl.value = data.url;
+    bannerImagePreview.src = data.url;
+    bannerImagePreview.style.display = 'block';
+    msg.className = 'msg ok';
+    msg.textContent = 'Gambar berhasil diupload';
+  } catch (err) {
+    msg.className = 'msg err';
+    msg.textContent = `Gagal koneksi: ${err.message}`;
+  }
+});
 
 bannerForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -346,7 +397,9 @@ bannerForm.addEventListener('submit', async (e) => {
     enabled: document.getElementById('bannerEnabled').value === 'true',
     text: document.getElementById('bannerText').value,
     link: document.getElementById('bannerLink').value,
-    image_url: ''
+    telegram: document.getElementById('bannerTelegram').value,
+    facebook: document.getElementById('bannerFacebook').value,
+    image_url: bannerImageUrl.value
   };
 
   const res = await fetch('/api/settings/banner', {
@@ -367,4 +420,4 @@ bannerForm.addEventListener('submit', async (e) => {
 });
 
 boot();
-    
+      
