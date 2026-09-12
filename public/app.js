@@ -165,7 +165,7 @@ async function renderHomeSections() {
   // section pertama: film terbaru (tanpa filter kategori)
   const terbaru = await fetchVideos(new URLSearchParams({ limit: '3' }));
   if (terbaru.length > 0) {
-    sections.push({ icon: '\u{1F525}', name: 'Film Terbaru', catId: '', items: terbaru });
+    sections.push({ icon: '\u{1F525}', name: 'Vidio Terbaru', catId: '', items: terbaru });
   }
 
   // section berikutnya: satu per kategori yang punya video
@@ -262,4 +262,4 @@ if (content) {
   })();
       }
 
-                                     
+        
