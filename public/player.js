@@ -34,7 +34,7 @@ async function loadVideo() {
   if (video.category_id) {
     loadRelated(video.category_id, video.id);
   } else {
-    relatedGrid.innerHTML = '<div class="empty-state">Video ini belum punya kategori.</div>';
+    loadLatest(video.id);
   }
 }
 
@@ -57,9 +57,23 @@ async function loadRelated(categoryId, excludeId) {
   const data = await res.json();
   const items = (data.items || []).filter((v) => v.id !== excludeId);
 
+  if (items.length === 0) {
+    loadLatest(excludeId);
+    return;
+  }
+
+  relatedGrid.innerHTML = '';
+  items.forEach((v) => relatedGrid.appendChild(posterCard(v)));
+}
+
+async function loadLatest(excludeId) {
+  const res = await fetch(`/api/videos?limit=13`);
+  const data = await res.json();
+  const items = (data.items || []).filter((v) => v.id !== excludeId);
+
   relatedGrid.innerHTML = '';
   if (items.length === 0) {
-    relatedGrid.innerHTML = '<div class="empty-state">Belum ada video lain di kategori ini.</div>';
+    relatedGrid.innerHTML = '<div class="empty-state">Belum ada video lain.</div>';
     return;
   }
   items.forEach((v) => relatedGrid.appendChild(posterCard(v)));
