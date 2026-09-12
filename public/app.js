@@ -215,17 +215,30 @@ async function renderHomeSections() {
 }
 
 async function loadBanner() {
-  const bannerEl = document.getElementById('bannerStrip');
-  if (!bannerEl) return;
   try {
     const res = await fetch('/api/settings/banner');
     if (!res.ok) return;
     const banner = await res.json();
-    if (!banner.enabled || !banner.text) return;
 
-    document.getElementById('bannerText').textContent = banner.text;
-    bannerEl.href = banner.link || '#';
-    bannerEl.style.display = 'flex';
+    const bannerTextEl = document.getElementById('bannerText');
+    const bannerImageLink = document.getElementById('bannerImageLink');
+    const bannerImage = document.getElementById('bannerImage');
+    const socialTelegram = document.getElementById('socialTelegram');
+    const socialFacebook = document.getElementById('socialFacebook');
+
+    if (banner.enabled && banner.text && bannerTextEl) {
+      bannerTextEl.textContent = banner.text;
+      bannerTextEl.style.display = 'block';
+    }
+
+    if (banner.enabled && banner.image_url && bannerImageLink && bannerImage) {
+      bannerImage.src = banner.image_url;
+      bannerImageLink.href = banner.link || '#';
+      bannerImageLink.style.display = 'block';
+    }
+
+    if (socialTelegram && banner.telegram) socialTelegram.href = banner.telegram;
+    if (socialFacebook && banner.facebook) socialFacebook.href = banner.facebook;
   } catch (e) {
     // diamkan kalau gagal, banner cuma pemanis, jangan sampai ganggu halaman utama
   }
@@ -248,4 +261,5 @@ if (content) {
     await loadBanner();
   })();
       }
-  
+
+                                     
